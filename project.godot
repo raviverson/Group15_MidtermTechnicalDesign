@@ -1,0 +1,41 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="ClinicRush"
+config/description="An offline educational game for basic first aid awareness. Built on the Godot drag-and-drop GUI demo template."
+run/main_scene="res://scenes/main_menu.tscn"
+config/quit_on_go_back=false
+config/features=PackedStringArray("4.7")
+config/icon="res://icon.webp"
+
+[autoload]
+
+Database="*res://scripts/autoload/database.gd"
+Game="*res://scripts/autoload/game.gd"
+
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=4
+window/vsync/vsync_mode=0
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"

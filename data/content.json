@@ -1,0 +1,585 @@
+{
+  "content_version": 2,
+  "_note": "Seeded into SQLite on launch. Bump content_version after edits. Each level = finite list of scenes. Each scene: situation + choices (each with its own 'effect' = what happens to the patient) + optional actions (gesture minigames that perform the correct procedure). ALL medical content must be reviewed by a qualified first-aid instructor before the pilot.",
+  "levels": [
+    {
+      "id": 1, "code": "minor_cut", "title": "Minor Cuts", "category": "Wounds", "icon": "bandage",
+      "summary": "Clean, protect and cover a small scrape.",
+      "scenario": "You fell while running and scraped your knee. It is bleeding a little and has some dirt in it.",
+      "scenes": [
+        {"title": "Clean", "time": 25,
+         "situation": "The scrape on your knee is dirty and bleeding a little.",
+         "prompt": "What is the first thing you should do?",
+         "choices": [
+           {"label": "Wash hands, then rinse the wound with clean water", "correct": true, "mood": "happy",
+            "effect": "The dirt washes away and the wound is ready for care. Clean hands keep germs out."},
+           {"label": "Put a bandage on it right away", "correct": false, "mood": "hurt",
+            "effect": "Dirt gets trapped under the bandage. Two days later the knee is red, swollen and painful - it got infected."},
+           {"label": "Rub coffee grounds on it to stop the bleeding", "correct": false, "mood": "hurt",
+            "effect": "Coffee grounds are not clean. Germs get into the wound and it becomes infected."}
+         ],
+         "actions": [
+           {"title": "Clean the wound", "type": "wipe",
+            "instruction": "Drag the right item onto the wound, then wipe left and right to clean it.",
+            "hint": "Clean running water is best for rinsing a small wound.",
+            "success": "The wound is clean!", "time": 40,
+            "params": {"body_label": "Knee", "axis": "horizontal", "coverage": 0.85,
+              "tools": [
+                {"label": "Clean water", "correct": true},
+                {"label": "Rubbing alcohol", "correct": false, "effect": "It stings badly and damages the healthy tissue around the wound. Healing slows down."},
+                {"label": "Coffee grounds", "correct": false, "effect": "Coffee grounds are not clean. Germs get into the wound and it becomes infected."}
+              ]}}
+         ]},
+        {"title": "Protect", "time": 25,
+         "situation": "The wound is clean and the bleeding has stopped.",
+         "prompt": "How do you protect the wound?",
+         "choices": [
+           {"label": "Apply a thin layer of petroleum jelly or antibiotic ointment", "correct": true, "mood": "happy",
+            "effect": "The wound stays moist and protected, so it heals faster with less scarring."},
+           {"label": "Pour hydrogen peroxide or alcohol on it", "correct": false, "mood": "hurt",
+            "effect": "It stings and damages healthy tissue. The wound takes longer to heal."}
+         ],
+         "actions": [
+           {"title": "Apply ointment", "type": "drag_drop",
+            "instruction": "Drag the right item onto the wound.",
+            "hint": "A thin layer of petroleum jelly or antibiotic ointment.",
+            "success": "The wound is protected.", "time": 30,
+            "params": {"body_label": "Knee", "target_label": "Wound",
+              "items": [
+                {"label": "Petroleum jelly / antibiotic ointment", "correct": true},
+                {"label": "Toothpaste", "correct": false, "effect": "Toothpaste irritates the wound. It is not a first-aid product."}
+              ]}}
+         ]},
+        {"title": "Bandage", "time": 25,
+         "situation": "The wound is clean and protected.",
+         "prompt": "What do you cover it with?",
+         "choices": [
+           {"label": "A clean, sterile bandage", "correct": true, "mood": "happy",
+            "effect": "The bandage keeps dirt and germs out while the wound heals."},
+           {"label": "A leaf from the garden", "correct": false, "mood": "hurt",
+            "effect": "Leaves carry dirt and germs. The wound gets infected."}
+         ],
+         "actions": [
+           {"title": "Bandage the wound", "type": "drag_drop",
+            "instruction": "Drag the bandage to cover the wound.",
+            "hint": "Use a clean, sterile bandage.",
+            "success": "You treated the wound properly!", "time": 25,
+            "params": {"body_label": "Knee", "target_label": "Wound",
+              "items": [
+                {"label": "Clean bandage", "correct": true},
+                {"label": "Used tissue paper", "correct": false, "effect": "Used tissue is full of germs. The wound gets infected."}
+              ]}}
+         ]}
+      ],
+      "tips": [
+        "Wash your hands before touching a wound.",
+        "If it is bleeding, press a clean cloth on it until it stops.",
+        "Rinse the wound with clean running water to remove dirt.",
+        "Apply a thin layer of petroleum jelly or antibiotic ointment.",
+        "Cover with a clean bandage and change it daily or when it gets wet or dirty.",
+        "See a health worker if bleeding does not stop after 10 minutes of pressure, the cut is deep, or you see redness, swelling, pus or fever."
+      ]
+    },
+    {
+      "id": 2, "code": "nosebleed", "title": "Nosebleed", "category": "Bleeding", "icon": "drop",
+      "summary": "Lean forward and pinch - never tilt the head back.",
+      "scenario": "Your classmate suddenly has a nosebleed during recess. They look scared.",
+      "scenes": [
+        {"title": "Position", "time": 20,
+         "situation": "Blood is dripping from your classmate's nose.",
+         "prompt": "How should they sit?",
+         "choices": [
+           {"label": "Sit up and lean slightly forward", "correct": true, "mood": "happy",
+            "effect": "Blood drains out of the nose instead of down the throat. They can breathe and stay calm."},
+           {"label": "Tilt the head back", "correct": false, "mood": "hurt",
+            "effect": "Blood runs down the throat. They start coughing and feel like vomiting."},
+           {"label": "Lie down flat on the floor", "correct": false, "mood": "hurt",
+            "effect": "Blood flows into the throat. They choke and cough."}
+         ],
+         "actions": [
+           {"title": "Lean forward", "type": "swipe",
+            "instruction": "Swipe DOWN to help them lean slightly forward.",
+            "hint": "Forward, not backward!",
+            "success": "Leaning forward keeps blood out of the throat.", "time": 20,
+            "params": {"body_label": "Head and shoulders", "action_label": "Lean forward", "direction": "down", "count": 1,
+              "wrong_strike": true,
+              "wrong_feedback": "You tilted the head back. Blood runs down the throat and they start coughing."}}
+         ]},
+        {"title": "Pinch", "time": 20,
+         "situation": "They are leaning forward, but the nose is still bleeding.",
+         "prompt": "How do you stop the bleeding?",
+         "choices": [
+           {"label": "Pinch the soft part of the nose for 10-15 minutes", "correct": true, "mood": "happy",
+            "effect": "Steady pressure lets a clot form. The bleeding slows down."},
+           {"label": "Stuff tissue deep into the nose", "correct": false, "mood": "hurt",
+            "effect": "The tissue irritates the inside of the nose, and the bleeding starts again when it is pulled out."},
+           {"label": "Pinch for a few seconds and keep checking", "correct": false, "mood": "worried",
+            "effect": "Letting go too early breaks the clot that is forming. The bleeding continues."}
+         ],
+         "actions": [
+           {"title": "Pinch the nose", "type": "hold",
+            "instruction": "Press and HOLD to pinch the soft part of the nose. Don't let go!",
+            "hint": "Pinch below the bony bridge and keep steady pressure.",
+            "success": "Continuous pressure stopped the bleeding.", "time": 30,
+            "params": {"body_label": "Nose", "target_label": "Soft part of nose", "seconds": 8, "sim_minutes": 10,
+              "release_feedback": "You let go early - the clot broke and the bleeding restarted. Keep pinching."}}
+         ]},
+        {"title": "Aftercare", "time": 20,
+         "situation": "After 10 minutes, the bleeding has stopped.",
+         "prompt": "What should they do next?",
+         "choices": [
+           {"label": "Rest and avoid blowing the nose for a few hours", "correct": true, "mood": "happy",
+            "effect": "The clot stays in place and the nosebleed does not come back."},
+           {"label": "Blow the nose hard to clear it", "correct": false, "mood": "hurt",
+            "effect": "The clot is blown out and the nose starts bleeding again."}
+         ],
+         "actions": []}
+      ],
+      "tips": [
+        "Sit up and lean slightly forward. Do NOT tilt the head back.",
+        "Pinch the soft part of the nose for 10-15 minutes without letting go.",
+        "Breathe through the mouth.",
+        "Avoid blowing the nose or heavy activity for several hours.",
+        "Get medical help if bleeding lasts more than 20 minutes, follows a head injury, or there is trouble breathing."
+      ]
+    },
+    {
+      "id": 3, "code": "sprain", "title": "Sprain", "category": "Bones & Joints", "icon": "foot",
+      "summary": "Rest, Ice, Compression, Elevation.",
+      "scenario": "While playing basketball, your friend twisted their ankle. It is swollen and painful, but they can move their toes.",
+      "scenes": [
+        {"title": "Rest", "time": 20,
+         "situation": "Your friend is sitting on the court holding their swollen ankle.",
+         "prompt": "What do you do first?",
+         "choices": [
+           {"label": "Stop playing and rest the ankle", "correct": true, "mood": "happy",
+            "effect": "Resting prevents more damage to the injured ligament."},
+           {"label": "Tell them to walk it off", "correct": false, "mood": "hurt",
+            "effect": "Walking on it stretches the injured ligament even more. The pain and swelling get worse."}
+         ],
+         "actions": [
+           {"title": "RICE order", "type": "sequence",
+            "instruction": "Tap the RICE steps in the correct order.",
+            "hint": "R - I - C - E", "success": "Correct order!", "time": 30,
+            "params": {"prompt": "Put the RICE steps in order:",
+              "order": ["Rest", "Ice", "Compression", "Elevation"],
+              "distractors": [{"label": "Heat", "effect": "Heat increases blood flow, so a fresh sprain swells even more."}]}}
+         ]},
+        {"title": "Ice", "time": 20,
+         "situation": "The ankle is getting more swollen.",
+         "prompt": "How do you cool the ankle?",
+         "choices": [
+           {"label": "Ice pack wrapped in a cloth for 15-20 minutes", "correct": true, "mood": "happy",
+            "effect": "The cold reduces swelling and numbs the pain without hurting the skin."},
+           {"label": "Hot water bottle", "correct": false, "mood": "hurt",
+            "effect": "Heat increases blood flow. The ankle swells even more."},
+           {"label": "Ice cubes directly on the skin", "correct": false, "mood": "hurt",
+            "effect": "Direct ice can cause a cold injury to the skin."}
+         ],
+         "actions": [
+           {"title": "Hold the ice", "type": "hold",
+            "instruction": "HOLD the wrapped ice pack on the ankle.",
+            "hint": "Ice for about 15-20 minutes at a time.",
+            "success": "20 minutes of icing done.", "time": 30,
+            "params": {"body_label": "Ankle", "target_label": "Ice pack", "seconds": 7, "sim_minutes": 20,
+              "release_feedback": "Keep the ice on for the full 15-20 minutes."}}
+         ]},
+        {"title": "Wrap", "time": 20,
+         "situation": "The ankle needs support.",
+         "prompt": "How do you wrap it?",
+         "choices": [
+           {"label": "Elastic bandage, snug but not too tight", "correct": true, "mood": "happy",
+            "effect": "Compression limits swelling while blood keeps flowing to the foot."},
+           {"label": "As tight as possible", "correct": false, "mood": "hurt",
+            "effect": "Too tight cuts off blood flow. The toes turn pale, cold and numb."}
+         ],
+         "actions": [
+           {"title": "Wrap the ankle", "type": "wrap",
+            "instruction": "Draw circles around the ankle to wrap the compression bandage.",
+            "hint": "Toes should stay warm and pink.",
+            "success": "Nicely wrapped!", "time": 40,
+            "params": {"body_label": "Ankle", "limb_label": "Ankle", "turns": 3}}
+         ]},
+        {"title": "Elevate", "time": 20,
+         "situation": "The ankle is wrapped.",
+         "prompt": "How should they rest the leg?",
+         "choices": [
+           {"label": "Raise the ankle above heart level", "correct": true, "mood": "happy",
+            "effect": "Fluid drains away and the swelling goes down."},
+           {"label": "Let the foot hang down", "correct": false, "mood": "hurt",
+            "effect": "Fluid collects in the ankle and it swells even more."}
+         ],
+         "actions": [
+           {"title": "Elevate", "type": "swipe",
+            "instruction": "Swipe UP to raise the ankle above heart level.",
+            "hint": "Prop the leg on pillows.",
+            "success": "Elevation reduces swelling.", "time": 20,
+            "params": {"body_label": "Leg", "action_label": "Raise leg", "direction": "up", "count": 1,
+              "wrong_feedback": "Raise the leg UP, above the level of the heart."}}
+         ]}
+      ],
+      "tips": [
+        "Rest: stop the activity and avoid putting weight on the injury.",
+        "Ice: apply a wrapped ice pack for 15-20 minutes at a time.",
+        "Compression: wrap with an elastic bandage - snug, not tight.",
+        "Elevation: raise the injured part above heart level.",
+        "Get medical help if they cannot bear weight, the joint looks deformed, or there is numbness."
+      ]
+    },
+    {
+      "id": 4, "code": "burn", "title": "Minor Burn", "category": "Burns", "icon": "flame",
+      "summary": "Cool running water for 20 minutes. No toothpaste, no ice.",
+      "scenario": "While helping cook, your forearm touched a hot pot. The skin is red and painful. There is no big blister.",
+      "scenes": [
+        {"title": "Cool", "time": 20,
+         "situation": "Your forearm is red and stinging from the hot pot.",
+         "prompt": "What do you do first?",
+         "choices": [
+           {"label": "Remove watches/rings and cool the burn under cool running water", "correct": true, "mood": "happy",
+            "effect": "The burning stops and the pain eases. Removing tight items early stops them getting stuck when the skin swells."},
+           {"label": "Put toothpaste on it", "correct": false, "mood": "hurt",
+            "effect": "Toothpaste traps heat in the skin. The burn gets deeper and may become infected."},
+           {"label": "Put ice cubes on it", "correct": false, "mood": "hurt",
+            "effect": "Ice damages the burned skin and makes the injury worse."}
+         ],
+         "actions": [
+           {"title": "Remove watch", "type": "swipe",
+            "instruction": "Swipe RIGHT to slide off the watch before the arm swells.",
+            "hint": "Remove watches, rings and tight items early.",
+            "success": "Watch removed.", "time": 20,
+            "params": {"body_label": "Forearm", "action_label": "Remove watch", "direction": "right", "count": 1,
+              "wrong_feedback": "Slide the watch off - swipe RIGHT."}},
+           {"title": "Cool the burn", "type": "hold",
+            "instruction": "HOLD the arm under the cool running water.",
+            "hint": "Keep cooling for about 20 minutes.",
+            "success": "20 minutes of cooling - great job.", "time": 30,
+            "params": {"body_label": "Forearm", "target_label": "Under cool water", "seconds": 8, "sim_minutes": 20,
+              "release_feedback": "Keep the burn under cool water for the full 20 minutes."}}
+         ]},
+        {"title": "Cover", "time": 20,
+         "situation": "After cooling, the pain is much better. The skin is still red.",
+         "prompt": "How do you cover the burn?",
+         "choices": [
+           {"label": "Loosely, with cling film or a clean non-stick dressing", "correct": true, "mood": "happy",
+            "effect": "The burn stays clean and protected without sticking."},
+           {"label": "With cotton balls", "correct": false, "mood": "hurt",
+            "effect": "Cotton fibers stick to the burn and are painful to remove."},
+           {"label": "Pop any blisters first, then cover", "correct": false, "mood": "hurt",
+            "effect": "Popping blisters opens the skin to germs. The burn gets infected."}
+         ],
+         "actions": [
+           {"title": "Cover loosely", "type": "drag_drop",
+            "instruction": "Drag the right dressing onto the burn.",
+            "hint": "Use something clean that will not stick.",
+            "success": "The burn is protected.", "time": 25,
+            "params": {"body_label": "Forearm", "target_label": "Burn",
+              "items": [
+                {"label": "Clean non-stick dressing / cling film", "correct": true},
+                {"label": "Butter", "correct": false, "effect": "Butter holds heat in the skin and can cause infection."},
+                {"label": "Tight bandage", "correct": false, "effect": "Burns swell. A tight bandage squeezes the skin and hurts."}
+              ]}}
+         ]},
+        {"title": "Get help", "time": 20,
+         "situation": "Your friend asks when a burn needs a doctor.",
+         "prompt": "When should you get medical help for a burn?",
+         "choices": [
+           {"label": "If it is bigger than the palm, or on the face, hands, feet or genitals", "correct": true, "mood": "happy",
+            "effect": "Right! These burns need a health worker. Getting help early prevents complications."},
+           {"label": "Never - burns always heal on their own", "correct": false, "mood": "worried",
+            "effect": "Large or deep burns can get infected and leave serious scars without treatment."}
+         ],
+         "actions": []}
+      ],
+      "tips": [
+        "Cool the burn under cool running water for about 20 minutes.",
+        "Remove rings, watches and tight clothing near the burn early.",
+        "Never use ice, toothpaste, butter or oil on a burn.",
+        "Do not pop blisters.",
+        "Cover loosely with a clean non-stick dressing or cling film.",
+        "Get medical help for burns larger than the person's palm, on the face, hands, feet or genitals, chemical or electrical burns, or burns on young children."
+      ]
+    },
+    {
+      "id": 5, "code": "sting", "title": "Insect Sting", "category": "Bites & Stings", "icon": "bee",
+      "summary": "Remove the stinger, wash, cool - and watch for allergy.",
+      "scenario": "A bee stung your little brother on the arm in the garden. You can see the stinger in the skin.",
+      "scenes": [
+        {"title": "Stinger", "time": 20,
+         "situation": "The bee stinger is still in his arm.",
+         "prompt": "How do you remove the stinger?",
+         "choices": [
+           {"label": "Scrape it out sideways with a flat edge, like a card", "correct": true, "mood": "happy",
+            "effect": "The stinger comes out quickly, so less venom gets in."},
+           {"label": "Squeeze it out with your fingers", "correct": false, "mood": "hurt",
+            "effect": "Squeezing can push more venom into the skin. The swelling and pain get worse."},
+           {"label": "Leave it in", "correct": false, "mood": "hurt",
+            "effect": "The stinger keeps releasing venom. The sting becomes more swollen and painful."}
+         ],
+         "actions": [
+           {"title": "Scrape", "type": "swipe",
+            "instruction": "Swipe sideways (left or right) twice to scrape the stinger out.",
+            "hint": "Scrape, don't squeeze.",
+            "success": "Stinger removed!", "time": 20,
+            "params": {"body_label": "Arm", "action_label": "Scrape", "direction": "horizontal", "count": 2,
+              "wrong_feedback": "Scrape SIDEWAYS across the skin with a flat edge."}}
+         ]},
+        {"title": "Wash & cool", "time": 20,
+         "situation": "The stinger is out. The area is red and itchy.",
+         "prompt": "What do you do next?",
+         "choices": [
+           {"label": "Wash with soap and water, then apply a cold pack", "correct": true, "mood": "happy",
+            "effect": "The area is clean and the cold reduces swelling and pain."},
+           {"label": "Rub mud on it", "correct": false, "mood": "hurt",
+            "effect": "Mud is dirty. The sting gets infected."}
+         ],
+         "actions": [
+           {"title": "Wash", "type": "wipe",
+            "instruction": "Drag the right item onto the sting, then wipe to wash it.",
+            "hint": "Soap and water.", "success": "Clean!", "time": 35,
+            "params": {"body_label": "Arm", "axis": "any", "coverage": 0.8,
+              "tools": [
+                {"label": "Soap and water", "correct": true},
+                {"label": "Mud", "correct": false, "effect": "Mud is dirty. The sting gets infected."}
+              ]}},
+           {"title": "Cold pack", "type": "drag_drop",
+            "instruction": "Drag the right item onto the sting to reduce swelling.",
+            "hint": "Something cold, wrapped in cloth.",
+            "success": "The swelling is going down.", "time": 25,
+            "params": {"body_label": "Arm", "target_label": "Sting",
+              "items": [
+                {"label": "Cold pack wrapped in cloth", "correct": true},
+                {"label": "Hot compress", "correct": false, "effect": "Heat makes the swelling and itching worse."}
+              ]}}
+         ]},
+        {"title": "Allergy", "time": 15,
+         "situation": "A few minutes later, his lips start swelling and he is having trouble breathing.",
+         "prompt": "What do you do?",
+         "choices": [
+           {"label": "Call 911 right away - this may be a severe allergic reaction", "correct": true, "mood": "worried",
+            "effect": "Help is on the way. If he has an epinephrine auto-injector, help him use it."},
+           {"label": "Give him water and wait", "correct": false, "mood": "hurt",
+            "effect": "Severe allergic reactions get worse fast. Waiting can be life-threatening."}
+         ],
+         "actions": []}
+      ],
+      "tips": [
+        "Remove the stinger quickly - scrape it off with a flat edge.",
+        "Wash the area with soap and water.",
+        "Apply a cold pack wrapped in cloth to reduce swelling.",
+        "Call 911 if there is swelling of the face, lips or throat, trouble breathing, or dizziness.",
+        "If the person has a prescribed epinephrine auto-injector, help them use it."
+      ]
+    },
+    {
+      "id": 6, "code": "fainting", "title": "Fainting", "category": "Medical", "icon": "person",
+      "summary": "Lay them down, raise the legs, check breathing.",
+      "scenario": "During a flag ceremony on a hot morning, a student suddenly collapses.",
+      "scenes": [
+        {"title": "Check", "time": 20,
+         "situation": "A student is lying on the ground and is not moving.",
+         "prompt": "What do you do first?",
+         "choices": [
+           {"label": "Make sure the area is safe, then tap and shout to check response", "correct": true, "mood": "worried",
+            "effect": "You are safe to help, and you quickly learn how the student is doing."},
+           {"label": "Pour water on their face", "correct": false, "mood": "hurt",
+            "effect": "Water can go into the nose and mouth and make them choke."}
+         ],
+         "actions": [
+           {"title": "Check steps", "type": "sequence",
+            "instruction": "Tap the actions in the correct order.",
+            "hint": "Safety first, then response, then breathing.",
+            "success": "Good assessment!", "time": 35,
+            "params": {"prompt": "What do you do, in order?",
+              "order": ["Check the area is safe", "Tap shoulders and shout", "Check breathing", "Ask someone to call 911 if they don't wake up"],
+              "distractors": [{"label": "Give them water to drink", "effect": "Someone who is not fully awake can choke on a drink."}]}}
+         ]},
+        {"title": "Position", "time": 20,
+         "situation": "The student is breathing and starting to move, but is still very dizzy.",
+         "prompt": "How do you position them?",
+         "choices": [
+           {"label": "Keep them lying on their back and raise their legs", "correct": true, "mood": "happy",
+            "effect": "Blood flows back to the brain and they start to feel better."},
+           {"label": "Help them stand up quickly", "correct": false, "mood": "hurt",
+            "effect": "Standing too soon makes them faint again. They fall and bump their head."}
+         ],
+         "actions": [
+           {"title": "Raise legs", "type": "swipe",
+            "instruction": "Swipe UP to raise their legs about 30 cm.",
+            "hint": "Raise the legs, not the head.",
+            "success": "Blood flows back to the brain.", "time": 20,
+            "params": {"body_label": "Legs", "action_label": "Raise legs", "direction": "up", "count": 1,
+              "wrong_feedback": "Raise the legs UP."}},
+           {"title": "Loosen", "type": "drag_drop",
+            "instruction": "Drag the right action onto the person.",
+            "hint": "Help them breathe easier and keep cool.",
+            "success": "They are recovering.", "time": 25,
+            "params": {"body_label": "Person", "target_label": "Person",
+              "items": [
+                {"label": "Loosen tight clothing", "correct": true},
+                {"label": "Crowd around them", "correct": false, "effect": "A crowd blocks the fresh air. They stay dizzy longer."},
+                {"label": "Shake them hard", "correct": false, "effect": "Shaking can hurt them and doesn't help them recover."}
+              ]}}
+         ]},
+        {"title": "Recover", "time": 20,
+         "situation": "They wake up and say they are thirsty.",
+         "prompt": "What do you do?",
+         "choices": [
+           {"label": "Let them rest; give a drink only when they are fully alert", "correct": true, "mood": "happy",
+            "effect": "They recover safely in the shade."},
+           {"label": "Give food and drink while they are still drowsy", "correct": false, "mood": "hurt",
+            "effect": "Someone who is not fully awake can choke on food or drink."}
+         ],
+         "actions": []}
+      ],
+      "tips": [
+        "Lay the person on their back and raise their legs about 30 cm.",
+        "Loosen tight clothing and give them fresh air and shade.",
+        "If they are not breathing normally, call 911 and start CPR.",
+        "If they don't wake up within a minute or two, call 911.",
+        "When they recover, let them sit up slowly. Do not give food or drink until fully alert."
+      ]
+    },
+    {
+      "id": 7, "code": "choking", "title": "Choking", "category": "Airway", "icon": "lungs",
+      "summary": "5 back blows, 5 abdominal thrusts.",
+      "scenario": "At lunch, your tito suddenly grabs his throat. He cannot speak, cough or breathe.",
+      "scenes": [
+        {"title": "Recognize", "time": 15,
+         "situation": "Your tito is clutching his throat and cannot make a sound.",
+         "prompt": "What do you do?",
+         "choices": [
+           {"label": "Ask \"Are you choking?\" and have someone call 911", "correct": true, "mood": "worried",
+            "effect": "He nods - it is a severe blockage. Help is being called while you act."},
+           {"label": "Give him water", "correct": false, "mood": "hurt",
+            "effect": "Water cannot get past the blockage and can make the choking worse."},
+           {"label": "Sweep his mouth blindly with your finger", "correct": false, "mood": "hurt",
+            "effect": "A blind finger sweep can push the object deeper into the airway."}
+         ],
+         "actions": [
+           {"title": "Get ready", "type": "sequence",
+            "instruction": "Tap the actions in the correct order.",
+            "hint": "Confirm choking, get help, then act.",
+            "success": "Help is on the way.", "time": 30,
+            "params": {"prompt": "What do you do, in order?",
+              "order": ["Ask: \"Are you choking?\"", "Tell someone to call 911", "Lean him forward and support his chest"],
+              "distractors": [{"label": "Give him water", "effect": "Water cannot get past the blockage and can make the choking worse."}]}}
+         ]},
+        {"title": "Back blows", "time": 15,
+         "situation": "He is leaning forward and still cannot breathe.",
+         "prompt": "How do you help clear the airway?",
+         "choices": [
+           {"label": "Give 5 firm back blows between the shoulder blades", "correct": true, "mood": "worried",
+            "effect": "Each firm blow can help loosen the object."},
+           {"label": "Pat him gently on the back", "correct": false, "mood": "hurt",
+            "effect": "Gentle pats are too weak to move the object. He is running out of air."}
+         ],
+         "actions": [
+           {"title": "Back blows", "type": "swipe",
+            "instruction": "Give 5 firm back blows: swipe DOWN between the shoulder blades 5 times.",
+            "hint": "Heel of the hand, firm and downward.",
+            "success": "5 back blows done.", "time": 30,
+            "params": {"body_label": "Upper back", "action_label": "Back blows", "direction": "down", "count": 5,
+              "wrong_feedback": "Back blows go firmly DOWNWARD between the shoulder blades."}}
+         ]},
+        {"title": "Thrusts", "time": 15,
+         "situation": "The object is still stuck.",
+         "prompt": "What now?",
+         "choices": [
+           {"label": "Give 5 abdominal thrusts", "correct": true, "mood": "happy",
+            "effect": "The quick upward pressure pushes air out of the lungs - the object pops out!"},
+           {"label": "Wait and hope it clears", "correct": false, "mood": "hurt",
+            "effect": "Without air, he can become unconscious within minutes."}
+         ],
+         "actions": [
+           {"title": "Abdominal thrusts", "type": "swipe",
+            "instruction": "Give 5 abdominal thrusts: swipe UP 5 times (inward and upward).",
+            "hint": "Fist just above the belly button, pull sharply in and up.",
+            "success": "The object is out! He can breathe again.", "time": 30,
+            "params": {"body_label": "Abdomen (above belly button)", "action_label": "Abdominal thrusts", "direction": "up", "count": 5,
+              "wrong_feedback": "Abdominal thrusts go sharply INWARD and UPWARD."}}
+         ]}
+      ],
+      "tips": [
+        "If the person can cough forcefully, encourage them to keep coughing.",
+        "If they cannot cough, speak or breathe: call 911 (or have someone call).",
+        "Give 5 firm back blows between the shoulder blades, then 5 abdominal thrusts. Repeat until the object comes out.",
+        "If the person becomes unresponsive, lower them to the ground and start CPR.",
+        "Infants and pregnant women need different techniques - learn them in a certified course."
+      ]
+    },
+    {
+      "id": 8, "code": "cpr", "title": "Hands-Only CPR", "category": "Emergency", "icon": "heart",
+      "summary": "Call 911, push hard and fast in the center of the chest.",
+      "scenario": "An adult collapses in the barangay hall. They do not respond and are not breathing normally.",
+      "scenes": [
+        {"title": "Act", "time": 15,
+         "situation": "The adult on the floor is not responding and not breathing normally.",
+         "prompt": "What do you do?",
+         "choices": [
+           {"label": "Call 911, ask for an AED, and start CPR", "correct": true, "mood": "worried",
+            "effect": "Help is coming, and CPR keeps blood flowing to the brain until it arrives."},
+           {"label": "Wait to see if they wake up", "correct": false, "mood": "hurt",
+            "effect": "Without CPR, the brain gets no oxygen. Every minute of waiting lowers the chance of survival."},
+           {"label": "Give them water", "correct": false, "mood": "hurt",
+            "effect": "An unresponsive person cannot swallow. Water can block the airway."}
+         ],
+         "actions": [
+           {"title": "Check & call", "type": "sequence",
+            "instruction": "Tap the actions in the correct order.",
+            "hint": "Safety, response, help, breathing.",
+            "success": "Help is coming. Now act fast.", "time": 35,
+            "params": {"prompt": "What do you do, in order?",
+              "order": ["Make sure the area is safe", "Tap shoulders and shout", "Call 911 and ask for an AED", "Check breathing (no more than 10 seconds)"],
+              "distractors": [{"label": "Wait to see if they wake up", "effect": "Waiting wastes critical time. Every minute counts."}]}}
+         ]},
+        {"title": "Hands", "time": 15,
+         "situation": "You kneel beside the person.",
+         "prompt": "Where do you push?",
+         "choices": [
+           {"label": "Center of the chest, on the lower half of the breastbone", "correct": true, "mood": "worried",
+            "effect": "Pressing here squeezes the heart and pumps blood to the brain."},
+           {"label": "On the stomach", "correct": false, "mood": "hurt",
+            "effect": "Pushing on the stomach does not pump blood and can cause injury."}
+         ],
+         "actions": [
+           {"title": "Hand position", "type": "drag_drop",
+            "instruction": "Drag your hands to the correct spot on the chest.",
+            "hint": "Center of the chest, lower half of the breastbone.",
+            "success": "Correct hand position.", "time": 25,
+            "params": {"body_label": "Chest",
+              "items": [{"label": "Hands (heel of hand)", "correct": true}],
+              "targets": [
+                {"label": "Neck", "correct": false, "effect": "Pressing on the neck can block the airway and cause injury."},
+                {"label": "Center of chest", "correct": true},
+                {"label": "Stomach", "correct": false, "effect": "Pushing on the stomach does not pump blood and can cause injury."}
+              ]}}
+         ]},
+        {"title": "Compress", "time": 15,
+         "situation": "Your hands are in place.",
+         "prompt": "How fast do you push?",
+         "choices": [
+           {"label": "100-120 times per minute, hard and fast", "correct": true, "mood": "worried",
+            "effect": "Fast, deep compressions keep enough blood moving to protect the brain."},
+           {"label": "Slowly, about once every 2 seconds", "correct": false, "mood": "hurt",
+            "effect": "Too slow to pump enough blood. The brain is not getting enough oxygen."}
+         ],
+         "actions": [
+           {"title": "Compressions", "type": "rhythm",
+            "instruction": "Tap the chest 30 times at 100-120 per minute. Push hard, push fast!",
+            "hint": "Follow the blue pulse ring.",
+            "success": "Keep going until help or an AED arrives!", "time": 45,
+            "params": {"body_label": "Chest", "target_label": "Center of chest", "bpm_min": 100, "bpm_max": 120, "count": 30, "pass_ratio": 0.7}}
+         ]}
+      ],
+      "tips": [
+        "Check the scene is safe, then tap and shout to check for a response.",
+        "Call 911 (Philippines emergency hotline) and ask someone to bring an AED.",
+        "Place the heel of your hand on the center of the chest, other hand on top.",
+        "Push hard and fast: 100-120 per minute, about 5-6 cm deep.",
+        "Let the chest come all the way back up between compressions.",
+        "Do not stop until help arrives, an AED is ready, or the person starts breathing.",
+        "This game is not a substitute for a certified CPR course."
+      ]
+    }
+  ]
+}
